@@ -2,8 +2,11 @@
 //drawSymbol.draw();
 //drawSymbol.start();
 
-
-canvasDraw.init(true, 720/20, 1280/20, 20, 0.5);
-canvasDraw.draw();
-eventsListener.addEvent(canvasDraw.getCanv(), life.getCell());
-canvasDraw.start();
+window.addEventListener("load", function(){
+    $size.init(25);
+    $size.setPadding(2);
+    canvasDraw.init(true);
+    window.requestAnimationFrame(canvasDraw.draw);
+    eventsListener.addEvent();
+    canvasDraw.start();
+})

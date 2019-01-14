@@ -1,62 +1,61 @@
 const eventsListener = (function(window, document) {
-    let cell;
-    function eventListen(canvas, c) {
-        cell=c;
-        oldCurent=[]
-        newCurent=[]
+    
+    function eventListen() {
+        const canvas = $canv.get();
         canvas.addEventListener ("mousemove", mouseMoveSetCurent );
         canvas.addEventListener("mouseout", function() {
-            life.setRange([]);
-            life.setCurent([]);
-            canvasDraw.draw();
+            $grid.setRange([]);
+            $grid.setCurent([]);
+            window.requestAnimationFrame(canvasDraw.draw);
         });
         canvas.addEventListener("mousedown", mouseDownSelectRange);
     }
     
 
     function mouseDownSelectRange(event) {
-        canvas = canvasDraw.getCanv();
+        canvas = $canv.get();
         canvas.removeEventListener("mousemove", mouseMoveSetCurent)
-
         mouseMoveRange(event);
         canvas.addEventListener ("mousemove", mouseMoveRange )
         canvas.addEventListener("mouseup", mouseMouseupSelectRange)
     }
 
     function mouseMoveRange (event) {
-        const [oldCurent] = [life.getCurent()];
+        const [oldCurent] = [$grid.getCurent()];
         const [newCurent] = [getCell(event, oldCurent)];
-        if(isEqual(oldCurent, newCurent) && life.getRange()>0) return;
-        life.setCurent(newCurent);
-        life.addRange(newCurent);
-        canvasDraw.drawCurent(oldCurent, newCurent);  
+        if(isEqual(oldCurent, newCurent) && $grid.getRange()>0) return;
+        $grid.setCurent(newCurent);
+        $grid.addRange(newCurent);
+        window.requestAnimationFrame(() => canvasDraw.drawCurent(oldCurent, newCurent)); 
     }
 
     function mouseMouseupSelectRange(event) {
-        const r = life.getRange();
+        const r = $grid.getRange();
         if (r.length>1) {
             for (let i = 0; i < r.length; i++)
-                life.changeCurentCell(r[i], true);
+                $grid.changeCurentCell(r[i], true);
         } 
         else {
-            life.changeCurentCell(life.getCurent());
+            $grid.changeCurentCell($grid.getCurent());
         };
-        life.setRange([]);
+        $grid.setRange([]);
         canvas.removeEventListener("mousemove", mouseMoveRange);
         canvas.addEventListener ("mousemove", mouseMoveSetCurent);
-        canvasDraw.draw();
+        
+        window.requestAnimationFrame(canvasDraw.draw);
         canvas.removeEventListener("mouseup", mouseMouseupSelectRange)
     }
 
     function mouseMoveSetCurent (event) {
-        [oldCurent] = [life.getCurent()];
+        [oldCurent] = [$grid.getCurent()];
         [newCurent] = [getCell(event, oldCurent)];
-        if(isEqual(oldCurent, newCurent) || life.getRange()>1) return;
-        life.setCurent(newCurent);
-        canvasDraw.drawCurent(oldCurent, newCurent);  
+        if(isEqual(oldCurent, newCurent) || $grid.getRange()>1) return;
+        $grid.setCurent(newCurent);
+        window.requestAnimationFrame(() => canvasDraw.drawCurent(oldCurent, newCurent));  
     }
 
     function getCell(event, old) {
+        const cell=$size.getCell();
         const newX=event.offsetX;
         const newY=event.offsetY;
         const x = Math.floor(newX/cell);
@@ -65,10 +64,10 @@ const eventsListener = (function(window, document) {
 
         const oldX=(old[0]+1)*cell-cell/2;
         const oldY=(old[1]+1)*cell-cell/2;
-        const oldX1=oldX-cell*0.85;
-        const oldX2=oldX+cell*0.85;
-        const oldY1=oldY-cell*0.85;
-        const oldY2=oldY+cell*0.85;
+        const oldX1=oldX-cell*0.8;
+        const oldX2=oldX+cell*0.8;
+        const oldY1=oldY-cell*0.8;
+        const oldY2=oldY+cell*0.8;
         const xx = newX<oldX1 || newX>oldX2;
         const yy = newY<oldY1 || newY>oldY2;
 
@@ -76,14 +75,7 @@ const eventsListener = (function(window, document) {
     }
 
     function isEqual(a1, a2) {
-        b = a1.length && a2.length ? true : false;
-        try {
-            for (let i = 0; i < a1.length; i++)
-                b = a1[i] == a2[i] && b ? true : false;
-        } catch {
-            b = false
-        }
-        return b
+        return a1.toString() == a2.toString()
     }
 
     return {

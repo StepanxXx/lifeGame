@@ -1,14 +1,9 @@
-const life = (function(window, document) {
-    let COLS = 0;
-    let ROWS = 0;
-    let cell = 0;
+const $grid = (function(window, document) {
     let range = [];
     let curent = [];
     let items = [];
-    let padding = 0;
 
-    function init (random, rows, cols, p) {
-        padding = p;
+    function init (random, rows, cols) {
         items = getGrid(random, rows, cols)
     }
 
@@ -84,11 +79,7 @@ const life = (function(window, document) {
         addRange: addRange,
         setRange: function(a) {[range] = [a]; return range},
         getRange: function(a) {return range},
-        getCell: function(){return cell},
-        setCell: function(a){cell = a},
-        changeCurentCell: changeCurentCell,
-        setPadding: function (a) {a},
-        getPadding: function () {return padding}
+        changeCurentCell: changeCurentCell
     }
 
 })(window, document);
