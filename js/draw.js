@@ -20,17 +20,20 @@ const canvasDraw = (function(window, document) {
 
 
     function draw(items, cell) {
+        const c = $grid.getCurent();
+        const r = $grid.getRange();
+        const p=$size.getPadding();
+        const size = cell-p*2;
+
         $canv.clear();
-        let p=$size.getPadding();
         $canv.setFill();
-        let size = cell-p*2;
+
         for (let i = 0; i < items.length; i++)
             for (let j = 0; j < items[i].length; j++)
                 if (items[i][j])
                     $canv.draw(j*cell+p, i*cell+p, size);
+
         $canv.fillSellect(); //#e5ff00
-        let c = $grid.getCurent();
-        let r = $grid.getRange();
         if(c.length)
             $canv.draw(c[0]*cell, c[1]*cell);
         if(r.length)
