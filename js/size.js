@@ -5,8 +5,13 @@ const $size = (function(window, document) {
     let padding;
 
     function init(c=10) {
-        cell = c;
+        setCell(c);
         return getGridSize();
+    }
+
+    function setCell(c) {
+        const [w,h] = getSizeWindow();
+        cell = c + Math.min( w/c/(Math.floor(w/c)) , h/c/(Math.floor(h/c)) )
     }
 
     function getGridSize () {
@@ -24,7 +29,7 @@ const $size = (function(window, document) {
         const h = window.innerHeight
             || document.documentElement.clientHeight
             || document.body.clientHeight;
-        return [w-10, h-10]
+        return [w, h-6]
     }
 
     //object.addEventListener("resize", myScript);

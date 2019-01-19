@@ -6,13 +6,18 @@ $canv = (function(window, document) {
     function init(){
         canv = document.createElement('canvas');
         ctx = canv.getContext("2d");
-        const cell = $size.getCell();
-        const [w,h] = $size.getGridSize();
         canv.setAttribute("id", "canvasID");
         document.querySelector(".container").appendChild(canv);
+        sizingCanvas();
+        return [canv, ctx]
+    }
+
+    function sizingCanvas (){
+        const cell = $size.getCell();
+        const [w,h] = $size.getGridSize();
         canv.setAttribute("width", w*cell+"px");
         canv.setAttribute("height", h*cell+"px")
-        return [canv, ctx]
+        document.querySelector(".container").style.width = w*cell+"px";
     }
 
     function draw( x, y, size=$size.getCell()) {
@@ -31,9 +36,9 @@ $canv = (function(window, document) {
         //ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
         //ctx.fillRect(0, 0, canv.width, canv.height);
         ctx.clearRect(0, 0, canv.width, canv.height);
-        ctx.strokeStyle = selectColor;
-        ctx.rect(0, 0, canv.width, canv.height);
-        ctx.stroke();
+        // ctx.strokeStyle = selectColor;
+        // ctx.rect(0, 0, canv.width, canv.height);
+        // ctx.stroke();
     }
 
     return {
@@ -44,6 +49,7 @@ $canv = (function(window, document) {
         draw: draw,
         setFill: fill,
         fillSellect: fillSellect,
-        setBaseColor: function (c) {basaColor = c}
+        setBaseColor: function (c) {basaColor = c},
+        sizingCanvas: sizingCanvas
     }
 })(window, document);

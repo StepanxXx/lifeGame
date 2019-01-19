@@ -24,13 +24,15 @@ const $grid = (function(window, document) {
 
     function getGrid(random, rows, cols) {
         return random ? 
-            forEachCellCreate([], rows, cols, () => Math.round(Math.random())) :
-            forEachCellCreate([], rows, cols, () => 0);
+            forEachCellCreate([[], rows, cols, () => Math.round(Math.random())]) :
+            forEachCellCreate([[], rows, cols, () => 0]);
     }
 
     function newState(items) {
-        return forEachCellCreate(items, items.length, items[0].length, 
+        return forEachCellCreate([items, $size.getGridSize()[1], $size.getGridSize()[0],
             function (items, i, j){
+                if(items.length<=i || items[0].length<=j) 
+                    return Math.round(Math.random());
                 let count = countAround(items, i, j);
                 let num = 0;
                 if ( (count == 2 || count == 3) && items[i][j]) num = 1
@@ -40,7 +42,7 @@ const $grid = (function(window, document) {
                 else num = items[i][j];
                 return num;
             }
-        );
+        ]);
     }
 
     function countAround(items, i, j) {
@@ -54,7 +56,7 @@ const $grid = (function(window, document) {
         return num;
     }
 
-    function forEachCellCreate(items, rows, cols, fn) {
+    function forEachCellCreate([items, rows, cols, fn]) {
         let grid = [];
         for (let i = 0; i < rows; i++) {
             grid[i] = [];
