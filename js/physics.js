@@ -88,8 +88,15 @@ const eventsListener = (function(window, document) {
 
     function getCell(event, old) {
         const cell=$size.getCell();
-        const newX=event.offsetX || event.targetTouches[0].pageX;
-        const newY=event.offsetY || event.targetTouches[0].pageY;
+        let newX=0, newY=0;
+        if(!!event.targetTouches) {
+            newX= event.targetTouches[0].pageX;
+            newY= event.targetTouches[0].pageY;
+        } else {
+            newX= event.offsetX;
+            newY= event.offsetY;
+        }
+        
         const x = Math.floor(newX/cell);
         const y = Math.floor(newY/cell);
         if(old.length!=2) return [x, y];

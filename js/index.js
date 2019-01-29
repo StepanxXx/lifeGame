@@ -2,6 +2,15 @@
 //drawSymbol.draw();
 //drawSymbol.start();
 
+window.addEventListener("load", function(){
+  $size.init(25);
+  $size.setPadding(2);
+  canvasDraw.init(true);
+  window.requestAnimationFrame(canvasDraw.draw);
+  eventsListener.addEvent();
+  canvasDraw.start();
+})
+
 var elem = document.documentElement;
 
 function openFullscreen() {
@@ -40,12 +49,3 @@ function openFullscreen() {
     }
      
   });
-
-window.addEventListener("load", function(){
-    $size.init(25);
-    $size.setPadding(2);
-    canvasDraw.init(true);
-    window.requestAnimationFrame(canvasDraw.draw);
-    eventsListener.addEvent();
-    canvasDraw.start();
-})

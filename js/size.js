@@ -17,8 +17,8 @@ const $size = (function(window, document) {
     function getGridSize () {
         const [w, h] = getSizeWindow();
         if(!cell) cell=10;
-        width = Math.floor(w/cell);
-        height = Math.floor(h/cell);
+        width = Math.ceil(w/cell);
+        height = Math.ceil(h/cell);
         return [width, height]
     }
 
